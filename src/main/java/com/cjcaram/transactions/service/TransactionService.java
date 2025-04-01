@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,12 +28,14 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public TransactionDto createTransaction(TransactionDto transactionDto) {
-        Transaction transaction = modelMapper.map(transactionDto, Transaction.class);
+    @Transactional
+    public Transaction createTransaction(TransactionDto transactionDto) {
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(transactionDto.getAccountId());
+        transaction.setType(TransactionType.valueOf(transactionDto.getType()));
+        transaction.setAmount(transactionDto.getAmount());
         transaction.setDateTime(LocalDateTime.now());
-
-        transaction = transactionRepository.save(transaction);
-        return modelMapper.map(transaction, TransactionDto.class);
+        return transactionRepository.save(transaction);
     }
 
     public TransactionDto getTransactionById(Long id) {
@@ -48,6 +51,7 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public TransactionDto updateTransaction(Long id, TransactionDto transactionDto) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

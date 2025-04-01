@@ -1,5 +1,6 @@
 package com.cjcaram.transactions.controller;
 
+import com.cjcaram.transactions.entity.Transaction;
 import com.cjcaram.transactions.model.TransactionDto;
 import com.cjcaram.transactions.model.TransactionType;
 import com.cjcaram.transactions.service.TransactionService;
@@ -38,13 +39,12 @@ class TransactionControllerTest {
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // Handle LocalDateTime serialization
     }
 
     @Test
     void shouldGetAllTransactions() throws Exception {
         List<TransactionDto> transactions = List.of(
-                new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name())
+                new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name(), null)
         );
 
         when(transactionService.getAllTransactions()).thenReturn(transactions);
@@ -56,13 +56,13 @@ class TransactionControllerTest {
 
     @Test
     void shouldCreateTransaction() throws Exception {
-        TransactionDto dto = new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name());
+        Transaction txn = new Transaction(1L, 100L, new BigDecimal("50.0"), TransactionType.DEPOSIT, null);
 
-        when(transactionService.createTransaction(any(TransactionDto.class))).thenReturn(dto);
+        when(transactionService.createTransaction(any(TransactionDto.class))).thenReturn(txn);
 
         mockMvc.perform(post("/api/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
+                        .content(objectMapper.writeValueAsString(txn)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.amount").value("50.0"));
     }

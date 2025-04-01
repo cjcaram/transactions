@@ -42,7 +42,7 @@ public class TransactionServiceTest {
 
         when(transactionRepository.findAll()).thenReturn(transactions);
         when(modelMapper.map(any(Transaction.class), eq(TransactionDto.class)))
-                .thenReturn(new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name()));
+                .thenReturn(new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name(), null));
 
         List<TransactionDto> result = transactionService.getAllTransactions();
 
@@ -52,14 +52,12 @@ public class TransactionServiceTest {
 
     @Test
     void shouldCreateTransaction() {
-        TransactionDto dto = new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name());
+        TransactionDto dto = new TransactionDto(100L, new BigDecimal("50.0"), TransactionType.DEPOSIT.name(), null);
         Transaction transaction = new Transaction(1L, 100L, new BigDecimal("50.0"), TransactionType.DEPOSIT, LocalDateTime.now());
 
-        when(modelMapper.map(dto, Transaction.class)).thenReturn(transaction);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
-        when(modelMapper.map(transaction, TransactionDto.class)).thenReturn(dto);
 
-        TransactionDto result = transactionService.createTransaction(dto);
+        Transaction result = transactionService.createTransaction(dto);
 
         assertEquals(new BigDecimal("50.0"), result.getAmount());
         verify(transactionRepository, times(1)).save(any(Transaction.class));

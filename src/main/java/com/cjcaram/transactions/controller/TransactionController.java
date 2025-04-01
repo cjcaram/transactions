@@ -1,5 +1,6 @@
 package com.cjcaram.transactions.controller;
 
+import com.cjcaram.transactions.entity.Transaction;
 import com.cjcaram.transactions.model.TransactionDto;
 import com.cjcaram.transactions.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ public class TransactionController {
 
     @Operation(summary = "Add new transaction")
     @PostMapping
-    public ResponseEntity<TransactionDto> createTransaction(@RequestBody @Valid TransactionDto transactionDto) {
+    public ResponseEntity<Transaction> createTransaction(@RequestBody @Valid TransactionDto transactionDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.createTransaction(transactionDto));
     }
 
@@ -39,9 +40,9 @@ public class TransactionController {
     }
 
     @Operation(summary = "Get transaction by account id")
-    @GetMapping("/account/{accountID}")
-    public ResponseEntity<List<TransactionDto>> getTransactionByAccountIdId(@PathVariable Long accountID) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.getTransactionByAccountId(accountID));
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<List<TransactionDto>> getTransactionByAccountIdId(@PathVariable Long accountId) {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionByAccountId(accountId));
     }
 
     // TODO: PathMapping

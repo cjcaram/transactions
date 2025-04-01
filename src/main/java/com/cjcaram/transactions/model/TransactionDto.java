@@ -1,9 +1,6 @@
 package com.cjcaram.transactions.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +23,7 @@ public class TransactionDto {
     // This approach is not scalable. It is better create a new annotation where we can specify the enum itself
     @Pattern(regexp = "^(DEPOSIT|WITHDRAW)$", message = "Valid values = DEPOSIT|WITHDRAW")
     private String type;
+
+    @Null(message = "no date time should be passed")
+    private LocalDateTime dateTime;
 }
