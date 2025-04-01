@@ -1,5 +1,6 @@
 package com.cjcaram.transactions.entity;
 
+import com.cjcaram.transactions.model.TransactionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Transaction {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private String type;
+    private TransactionType type;
 
     @Column(nullable = false)
     private LocalDateTime dateTime;
