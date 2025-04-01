@@ -24,6 +24,6 @@ public class TransactionDto {
 
     @NotBlank(message = "Transaction type is required.")
     // This approach is not scalable. It is better create a new annotation where we can specify the enum itself
-    @Pattern(regexp = "^(CASA|VIVIENDA)$", message = "Valid values = DEPOSIT|WITHDRAW")
+    @Pattern(regexp = "^(DEPOSIT|WITHDRAW)$", message = "Valid values = DEPOSIT|WITHDRAW")
     private String type;
 }

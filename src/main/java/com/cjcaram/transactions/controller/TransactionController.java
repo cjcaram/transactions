@@ -35,11 +35,11 @@ public class TransactionController {
     @Operation(summary = "Get transaction by id")
     @GetMapping("/{id}")
     public ResponseEntity<TransactionDto> getTransactionById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.getTransactionById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionById(id));
     }
 
     @Operation(summary = "Get transaction by account id")
-    @GetMapping("/{accountID}")
+    @GetMapping("/account/{accountID}")
     public ResponseEntity<List<TransactionDto>> getTransactionByAccountIdId(@PathVariable Long accountID) {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.getTransactionByAccountId(accountID));
     }
